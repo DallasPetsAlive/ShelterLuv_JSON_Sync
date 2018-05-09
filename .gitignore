@@ -102,3 +102,4 @@ ENV/
 .idea/.name
 *.xml
 .idea/ShelterLuv_JSON_Sync.iml
+animals.json

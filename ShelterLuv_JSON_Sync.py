@@ -1,8 +1,13 @@
 # ShelterLuv sync to local Dallas Pets Alive filesystem script
 # Developed for Dallas Pets Alive by Katie Patterson www.kirska.com
-import requests, collections
+import requests
+import collections
+import json
+from Dog_Functions import parse_dogs
+from Cat_Functions import parse_cats
 
 API_KEY = '4b5a377b-b876-4a20-8d82-ebeac0b10d51'
+ANIMALS_FILE = 'animals.json'
 
 # First fetch the entire list of animals
 
@@ -50,12 +55,18 @@ while 1:
 
 # we should have all the animals now
 if str(animals_dict.__len__()) != str(total_count):
-    print 'something went wrong'
+    print 'something went wrong, missing animals'
+
+# write animals out to file for searching later
+with open(ANIMALS_FILE, 'w') as animals_file_obj:
+    animals_file_obj.write(json.dumps(animals_dict))
 
 # sort the list of animals by name
 ordered_animals = collections.OrderedDict(sorted(animals_dict.items()))
 
+# parse the dogs
+parse_dogs(ordered_animals)
 
-
-
+# parse the cats
+parse_cats(ordered_animals)
 
