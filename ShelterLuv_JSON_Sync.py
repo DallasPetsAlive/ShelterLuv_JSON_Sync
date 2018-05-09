@@ -4,11 +4,9 @@ import requests
 import collections
 import json
 import operator
+from Local_Defines import API_KEY, ANIMALS_FILE
 from Dog_Functions import parse_dogs
 from Cat_Functions import parse_cats
-
-API_KEY = '4b5a377b-b876-4a20-8d82-ebeac0b10d51'
-ANIMALS_FILE = 'animals.json'
 
 # First fetch the entire list of animals
 
