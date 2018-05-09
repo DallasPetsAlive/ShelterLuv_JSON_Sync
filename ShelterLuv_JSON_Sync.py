@@ -3,6 +3,7 @@
 import requests
 import collections
 import json
+import operator
 from Dog_Functions import parse_dogs
 from Cat_Functions import parse_cats
 
@@ -40,12 +41,12 @@ while 1:
 
     # add each animal to the dict
     for animal in response_json["animals"]:
-        name = animal["Name"]
-        if name in animals_dict:
+        ID = animal["ID"]
+        if ID in animals_dict:
             print 'animal already exists'
             continue
 
-        animals_dict[name] = animal
+        animals_dict[ID] = animal
 
     # check for more animals
     if response_json["has_more"]:
@@ -62,7 +63,14 @@ with open(ANIMALS_FILE, 'w') as animals_file_obj:
     animals_file_obj.write(json.dumps(animals_dict))
 
 # sort the list of animals by name
-ordered_animals = collections.OrderedDict(sorted(animals_dict.items()))
+name_dict = {}
+for animal in animals_dict:
+    name_dict[animal] = animals_dict[animal]["Name"]
+ordered_names = collections.OrderedDict(sorted(name_dict.items(), key=operator.itemgetter(1)))
+
+ordered_animals = collections.OrderedDict()
+for animal in ordered_names:
+    ordered_animals[animal] = animals_dict[animal]
 
 # parse the dogs
 parse_dogs(ordered_animals)
