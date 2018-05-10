@@ -2,6 +2,7 @@
 # Developed for Dallas Pets Alive by Katie Patterson www.kirska.com
 import collections
 import Common_Functions
+import json
 
 
 def generate_dog_pages(dogs):
@@ -10,7 +11,7 @@ def generate_dog_pages(dogs):
 
 def generate_dog_page_php(dog):
     # TODO generate HTML/PHP for dogs
-    return "stuff for dogs"
+    return str(json.dumps(dog))
 
 
 # This function accepts the list of dogs and generates the formatted list for browser output
