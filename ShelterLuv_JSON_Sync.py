@@ -7,6 +7,7 @@ import operator
 from Local_Defines import API_KEY, ANIMALS_FILE
 from Dog_Functions import parse_dogs
 from Cat_Functions import parse_cats
+from Common_Functions import parse_profiles
 
 # First fetch the entire list of animals
 
@@ -69,6 +70,9 @@ ordered_names = collections.OrderedDict(sorted(name_dict.items(), key=operator.i
 ordered_animals = collections.OrderedDict()
 for animal in ordered_names:
     ordered_animals[animal] = animals_dict[animal]
+
+# parse the profiles
+parse_profiles(ordered_animals)
 
 # parse the dogs
 parse_dogs(ordered_animals)

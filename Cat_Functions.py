@@ -5,8 +5,8 @@ import Common_Functions
 import json
 
 
-def generate_cat_pages(cats):
-    Common_Functions.manage_pages(0, cats)
+def generate_cat_pages(cats, output_list):
+    Common_Functions.manage_pages(0, cats, output_list)
 
 
 def generate_cat_page_php(cat):
@@ -30,5 +30,3 @@ def parse_cats(animals_in):
             cat_list[animal] = animals_in[animal]
 
     generate_cat_list(cat_list)
-
-    generate_cat_pages(cat_list)

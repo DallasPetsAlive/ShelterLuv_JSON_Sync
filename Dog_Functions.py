@@ -5,8 +5,8 @@ import Common_Functions
 import json
 
 
-def generate_dog_pages(dogs):
-    Common_Functions.manage_pages(dogs, 0)
+def generate_dog_pages(dogs, output_list):
+    Common_Functions.manage_pages(dogs, 0, output_list)
 
 
 def generate_dog_page_php(dog):
@@ -30,5 +30,3 @@ def parse_dogs(animals_in):
             dog_list[animal] = animals_in[animal]
 
     generate_dog_list(dog_list)
-
-    generate_dog_pages(dog_list)
