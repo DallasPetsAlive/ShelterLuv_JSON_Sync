@@ -1,11 +1,11 @@
 # Local defines for ShelterLuv JSON sync - vary by installation
 # Developed for Dallas Pets Alive by Katie Patterson www.kirska.com
 
-DOG_LIST_FILE = "cache\\lists\\dog_list.html"
-DOG_PROFILES_DIRECTORY = "cache\\profiles\\dogs\\"
+PROFILES_DIRECTORY = "C:\\wamp64\\www\\wordpress\\wp-content\\themes\\Divi-child\\pet_data\\profiles\\"
 
-CAT_LIST_FILE = "cache\\lists\\cat_list.html"
-CAT_PROFILES_DIRECTORY = "cache\\profiles\\cats\\"
+DOG_LIST_FILE = "C:\\wamp64\\www\\wordpress\\wp-content\\themes\\Divi-child\\pet_data\\listings\\dog_list.php"
+
+CAT_LIST_FILE = "C:\\wamp64\\www\\wordpress\\wp-content\\themes\\Divi-child\\pet_data\\listings\\cat_list.php"
 
 API_KEY = '4b5a377b-b876-4a20-8d82-ebeac0b10d51'
-ANIMALS_FILE = 'cache\\json\\animals.json'
+ANIMALS_FILE = 'C:\\wamp64\\www\\wordpress\\wp-content\\themes\\Divi-child\\pet_data\\animals.json'

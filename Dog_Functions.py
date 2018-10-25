@@ -3,21 +3,34 @@
 import collections
 import Common_Functions
 import json
-
-
-def generate_dog_pages(dogs, output_list):
-    Common_Functions.manage_pages(dogs, 0, output_list)
-
-
-def generate_dog_page_php(dog):
-    # TODO generate HTML/PHP for dogs
-    return str(json.dumps(dog))
+from Local_Defines import DOG_LIST_FILE
 
 
 # This function accepts the list of dogs and generates the formatted list for browser output
 def generate_dog_list(dogs):
-    # TODO take the dog list and generate HTML/PHP for list output
-    pass
+    with open(DOG_LIST_FILE, 'w') as file:
+        file.write("<div class=\"pet-list\">")
+        for dog in dogs:
+            petName = dogs[dog]['Name']
+            petId = dogs[dog]['ID']
+            petPhoto = dogs[dog]['CoverPhoto']
+            output = '<div class="pet-list-pet">' \
+                     '<div class ="pet-list-image">' \
+                     '<a href="//localhost/wordpress/pet/'
+            output += petId.encode('utf-8')
+            output += '">'
+            output += '<img src = "'
+            output += petPhoto.encode('utf-8')
+            output += '">' \
+                     '</a>' \
+                     '</div>' \
+                     '<div class="pet-list-name">' \
+                     '<a href="//localhost/wordpress/pet/'
+            output += petId.encode('utf-8')
+            output += '">'
+            output += petName.encode('utf-8')
+            output += '</a></div></div>'
+            file.write(output)
 
 
 # This function accepts animal list from main and parses the dogs
@@ -30,3 +43,7 @@ def parse_dogs(animals_in):
             dog_list[animal] = animals_in[animal]
 
     generate_dog_list(dog_list)
+
+
+def parse_dog_profile(animal):
+    return animal["Name"]

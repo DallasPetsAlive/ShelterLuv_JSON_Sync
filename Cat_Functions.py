@@ -5,15 +5,6 @@ import Common_Functions
 import json
 
 
-def generate_cat_pages(cats, output_list):
-    Common_Functions.manage_pages(0, cats, output_list)
-
-
-def generate_cat_page_php(cat):
-    # TODO generate HTML/PHP for cats
-    return str(json.dumps(cat))
-
-
 # This function accepts the list of dogs and generates the formatted list for browser output
 def generate_cat_list(cats):
     # TODO take the cat list and generate HTML/PHP for list output
@@ -30,3 +21,7 @@ def parse_cats(animals_in):
             cat_list[animal] = animals_in[animal]
 
     generate_cat_list(cat_list)
+
+
+def parse_cat_profile(animal):
+    return animal["Name"]
