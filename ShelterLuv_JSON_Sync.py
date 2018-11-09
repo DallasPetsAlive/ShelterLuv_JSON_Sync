@@ -9,6 +9,7 @@ from Dog_Functions import parse_dogs, parse_dog_profile
 from Cat_Functions import parse_cats, parse_cat_profile
 from Common_Functions import parse_other_profile
 import os
+import codecs
 
 
 # First fetch the entire list of animals
@@ -97,14 +98,14 @@ def parse_profiles(animals):
         filename = animal + ".php"
         output_file_list.append(filename)
 
-        with open(PROFILES_DIRECTORY + filename, 'w') as file:
+        with codecs.open(PROFILES_DIRECTORY + filename, 'w') as pet_file:
             if animals[animal]["Type"] == "Cat":
                 output = parse_cat_profile(animals[animal])
             elif animals[animal]["Type"] == "Dog":
                 output = parse_dog_profile(animals[animal])
             else:
                 output = parse_other_profile(animals[animal])
-            file.write(output.encode('utf-8'))
+            pet_file.write(output)
 
     # delete stagnant pages
     for profile in profiles_current:
