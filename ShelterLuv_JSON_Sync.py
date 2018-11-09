@@ -10,6 +10,7 @@ from Cat_Functions import parse_cats, parse_cat_profile
 from Common_Functions import parse_other_profile
 import os
 
+
 # First fetch the entire list of animals
 def shelterluv_sync():
     headers = {'x-api-key': API_KEY}
@@ -88,6 +89,9 @@ def parse_profiles(animals):
 
     # get current list of animal pages
     profiles_current = os.listdir(PROFILES_DIRECTORY)
+
+    # add the test file so it doesn't get deleted by the script
+    output_file_list.append("1.php")
 
     for animal in animals:
         filename = animal + ".php"

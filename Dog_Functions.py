@@ -30,7 +30,9 @@ def generate_dog_list(dogs):
             output += '">'
             output += petName.encode('utf-8')
             output += '</a></div></div>'
+            output += '\n'
             file.write(output)
+        file.write("</div>")
 
 
 # This function accepts animal list from main and parses the dogs
