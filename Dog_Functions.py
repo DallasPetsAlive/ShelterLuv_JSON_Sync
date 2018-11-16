@@ -16,7 +16,7 @@ def generate_dog_list(dogs):
             petPhoto = dogs[dog]['CoverPhoto']
             output = '<div class="pet-list-pet">' \
                      '<div class ="pet-list-image">' \
-                     '<a href="../pet/'
+                     '<a href="../../pet/'
             output += petId.encode('utf-8')
             output += '">'
             output += '<img src = "'
@@ -52,9 +52,9 @@ def parse_dog_profile(animal):
 
     output += "<div class=\"pet-profile\">\n"
     output += "<div class=\"pet-profile-images\">\n"
-    output += "<script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js\"></script>\n"
-    output += "<link href=\"http://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css\" rel=\"stylesheet\">\n"
-    output += "<script src=\"http://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js\"></script>\n"
+    output += "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js\"></script>\n"
+    output += "<link href=\"https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css\" rel=\"stylesheet\">\n"
+    output += "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js\"></script>\n"
 
     output += "<div class =\"fotorama\" data-nav=\"thumbs\" data-allowfullscreen=\"true\">\n"
 
@@ -122,7 +122,7 @@ def parse_dog_profile(animal):
     output += "<div class=\"et_pb_promo_description\">"
     output += "<h2>Apply to Adopt "
     output += animal["Name"].encode('utf-8')
-    output += "Today</h2>\n"
+    output += " Today</h2>\n"
     output += "</div>"
 
     output += "<a class=\"et_pb_promo_button\" href=\"https://www.shelterluv.com/matchme/adopt/DPA-A-"
