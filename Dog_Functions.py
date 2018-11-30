@@ -11,12 +11,14 @@ def generate_dog_list(dogs):
     with open(DOG_LIST_FILE, 'w') as file:
         file.write("<div class=\"pet-list\">")
         for dog in dogs:
+            # for dev this is ../../
+            # for local this is ../
             petName = dogs[dog]['Name']
             petId = dogs[dog]['ID']
             petPhoto = dogs[dog]['CoverPhoto']
             output = '<div class="pet-list-pet">' \
                      '<div class ="pet-list-image">' \
-                     '<a href="../../pet/'
+                     '<a href="../pet/'
             output += petId.encode('utf-8')
             output += '">'
             output += '<img src = "'

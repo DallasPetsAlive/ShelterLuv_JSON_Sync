@@ -3,12 +3,38 @@
 import collections
 import Common_Functions
 import json
+from Local_Defines import CAT_LIST_FILE
 
 
 # This function accepts the list of dogs and generates the formatted list for browser output
 def generate_cat_list(cats):
-    # TODO take the cat list and generate HTML/PHP for list output
-    pass
+    with open(CAT_LIST_FILE, 'w') as file:
+        file.write("<div class=\"pet-list\">")
+        for cat in cats:
+            # for dev this is ../../
+            # for local this is ../
+            petName = cats[cat]['Name']
+            petId = cats[cat]['ID']
+            petPhoto = cats[cat]['CoverPhoto']
+            output = '<div class="pet-list-pet">' \
+                     '<div class ="pet-list-image">' \
+                     '<a href="../pet/'
+            output += petId.encode('utf-8')
+            output += '">'
+            output += '<img src = "'
+            output += petPhoto.encode('utf-8')
+            output += '">' \
+                     '</a>' \
+                     '</div>' \
+                     '<div class="pet-list-name">' \
+                     '<a href="../pet/'
+            output += petId.encode('utf-8')
+            output += '">'
+            output += petName.encode('utf-8')
+            output += '</a></div></div>'
+            output += '\n'
+            file.write(output)
+        file.write("</div>")
 
 
 # This function accepts animal list from main and parses the dogs
@@ -24,4 +50,85 @@ def parse_cats(animals_in):
 
 
 def parse_cat_profile(animal):
-    return animal["Name"]
+    output = ""
+
+    output += "<div class=\"pet-profile\">\n"
+    output += "<div class=\"pet-profile-images\">\n"
+    output += "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js\"></script>\n"
+    output += "<link href=\"https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css\" rel=\"stylesheet\">\n"
+    output += "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js\"></script>\n"
+
+    output += "<div class =\"fotorama\" data-nav=\"thumbs\" data-allowfullscreen=\"true\">\n"
+
+    for photo in animal["Photos"]:
+        output += "<img src=\""
+        output += photo.encode('utf-8')
+        output += "\">\n"
+
+    output += "</div>\n"
+    output += "</div>\n"
+
+    output += "<div class=\"pet-profile-data\">\n"
+    output += "<div class=\"pet-profile-name\">\n"
+    output += animal["Name"].encode('utf-8')
+    output += "<br/>\n"
+    output += "</div>\n"
+
+    output += "<div class=\"pet-profile-other-data\">\n"
+    output += "<b>ID: </b>DPA-A-"
+    output += animal["ID"].encode('utf-8')
+    output += "<br/>\n"
+
+    output += "<b>Age: </b>"
+    if animal["Age"] < 3:
+        output += "Kitten"
+    elif animal["Age"] < 7:
+        output += "Young"
+    elif animal["Age"] > 98:
+        output += "Senior"
+    else:
+        output += "Adult"
+    output += "<br/>\n"
+
+    output += "<b>Sex: </b>"
+    output += animal["Sex"].encode('utf-8')
+    output += "<br/>\n"
+
+    output += "<b>Breed(s): </b>"
+    output += animal["Breed"].encode('utf-8')
+    output += "<br/>\n"
+
+    output += "</div>\n"
+
+    output += "<a class=\"pet-profile-top-adopt-button\" href=\"https://www.shelterluv.com/matchme/adopt/DPA-A-"
+    output += animal["ID"].encode('utf-8')
+    output += "?species=Cat\">Apply to Adopt "
+    output += animal["Name"].encode('utf-8')
+    output += "</a>\n"
+
+    output += "</div>\n"
+
+    output += "<div class=\"pet-profile-description\">\n"
+    output += "<div class=\"pet-profile-description-title\">\n"
+    output += "Meet "
+    output += animal["Name"].encode('utf-8')
+    output += "! <br/>\n"
+    output += "</div>"
+
+    output += animal["Description"].encode('utf-8')
+
+    output += "<div class=\"et_pb_promo et_pb_bg_layout_dark et_pb_text_align_center pet-profile-adopt-bottom\""
+    output += " style=\"background-color: #006cb7;\">\n"
+    output += "<div class=\"et_pb_promo_description\">"
+    output += "<h2>Apply to Adopt "
+    output += animal["Name"].encode('utf-8')
+    output += " Today</h2>\n"
+    output += "</div>"
+
+    output += "<a class=\"et_pb_promo_button\" href=\"https://www.shelterluv.com/matchme/adopt/DPA-A-"
+    output += animal["ID"].encode('utf-8')
+    output += "?species=Cat\">Go To Adoption Application</a>\n"
+
+    output += "</div></div></div>"
+
+    return output
