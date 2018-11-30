@@ -7,7 +7,7 @@ import operator
 from Local_Defines import API_KEY, ANIMALS_FILE, PROFILES_DIRECTORY
 from Dog_Functions import parse_dogs, parse_dog_profile
 from Cat_Functions import parse_cats, parse_cat_profile
-from Common_Functions import parse_other_profile
+from Common_Functions import parse_other_profile, parse_other
 import os
 import codecs
 
@@ -82,6 +82,9 @@ def shelterluv_sync():
 
     # parse the cats
     parse_cats(ordered_animals)
+
+    # parse everything else
+    parse_other(ordered_animals)
 
 
 # This function accepts the list of animals and generates profile pages for browser output
