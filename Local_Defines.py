@@ -9,5 +9,7 @@ CAT_LIST_FILE = "C:\\wamp64\\www\\wordpress\\wp-content\\themes\\Divi-child\\pet
 
 OTHER_LIST_FILE = "C:\\wamp64\\www\\wordpress\\wp-content\\themes\\Divi-child\\pet_data\\listings\\other_list.php"
 
+PLACEHOLDER_IMAGE = "\\wordpress\\wp-content\\themes\\Divi-child\\images\\dpa-placeholder.png"
+
 API_KEY = '4b5a377b-b876-4a20-8d82-ebeac0b10d51'
 ANIMALS_FILE = 'C:\\wamp64\\www\\wordpress\\wp-content\\themes\\Divi-child\\pet_data\\animals.json'

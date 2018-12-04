@@ -3,7 +3,7 @@
 import collections
 import Common_Functions
 import json
-from Local_Defines import DOG_LIST_FILE
+from Local_Defines import DOG_LIST_FILE, PLACEHOLDER_IMAGE
 
 
 # This function accepts the list of dogs and generates the formatted list for browser output
@@ -22,7 +22,12 @@ def generate_dog_list(dogs):
             output += petId.encode('utf-8')
             output += '">'
             output += '<img src = "'
-            output += petPhoto.encode('utf-8')
+
+            if "default_" not in petPhoto:
+                output += petPhoto.encode('utf-8')
+            else:
+                output += PLACEHOLDER_IMAGE
+
             output += '">' \
                      '</a>' \
                      '</div>' \
@@ -54,15 +59,20 @@ def parse_dog_profile(animal):
 
     output += "<div class=\"pet-profile\">\n"
     output += "<div class=\"pet-profile-images\">\n"
-    output += "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js\"></script>\n"
-    output += "<link href=\"https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css\" rel=\"stylesheet\">\n"
-    output += "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js\"></script>\n"
+    output += "<script src=\"../../wp-content/themes/Divi-child/fotorama/jquery.min.js\"></script>\n"
+    output += "<link href=\"../../wp-content/themes/Divi-child/fotorama/fotorama.css\" rel=\"stylesheet\">\n"
+    output += "<script src=\"../../wp-content/themes/Divi-child/fotorama/fotorama.js\"></script>\n"
 
     output += "<div class =\"fotorama\" data-nav=\"thumbs\" data-allowfullscreen=\"true\">\n"
 
-    for photo in animal["Photos"]:
+    if len(animal["Photos"]) > 0:
+        for photo in animal["Photos"]:
+            output += "<img src=\""
+            output += photo.encode('utf-8')
+            output += "\">\n"
+    else:
         output += "<img src=\""
-        output += photo.encode('utf-8')
+        output += PLACEHOLDER_IMAGE
         output += "\">\n"
 
     output += "</div>\n"
@@ -117,7 +127,11 @@ def parse_dog_profile(animal):
     output += "! <br/>\n"
     output += "</div>"
 
-    output += animal["Description"].encode('utf-8')
+    if len(animal["Description"]) < 3:
+        output += "We don't have much information on this animal yet. " \
+                  "If you'd like to find out more, please email adopt@dallaspetsalive.org."
+    else:
+        output += animal["Description"].encode('utf-8')
 
     output += "<div class=\"et_pb_promo et_pb_bg_layout_dark et_pb_text_align_center pet-profile-adopt-bottom\""
     output += " style=\"background-color: #006cb7;\">\n"

@@ -103,3 +103,8 @@ ENV/
 *.xml
 .idea/ShelterLuv_JSON_Sync.iml
 animals.json
+dev/Cat_Functions.py
+dev/Common_Functions.py
+dev/Dog_Functions.py
+dev/Local_Defines.py
+dev/ShelterLuv_JSON_Sync.py
