@@ -1,45 +1,77 @@
 # Dog functions for ShelterLuv sync
 # Developed for Dallas Pets Alive by Katie Patterson www.kirska.com
 import collections
-import Common_Functions
-import json
-from Local_Defines import DOG_LIST_FILE, PLACEHOLDER_IMAGE
+from Local_Defines import DOG_LIST_FILE, PLACEHOLDER_IMAGE, LIST_THEME_PATH, PET_LINK_RELATIVE_PATH
 
 
 # This function accepts the list of dogs and generates the formatted list for browser output
 def generate_dog_list(dogs):
     with open(DOG_LIST_FILE, 'w') as file:
+        file.write("<script src=\"")
+        file.write(LIST_THEME_PATH)
+        file.write("lazy/jquery.min.js\"></script>")
+        file.write("<script type=\"text/javascript\" src=\"")
+        file.write(LIST_THEME_PATH)
+        file.write("lazy/jquery.lazy.min.js\"></script>")
         file.write("<div class=\"pet-list\">")
+
+        pet_count = 0
+
         for dog in dogs:
+            pet_count += 1
+
             # for dev this is ../../
             # for local this is ../
-            petName = dogs[dog]['Name']
-            petId = dogs[dog]['ID']
-            petPhoto = dogs[dog]['CoverPhoto']
+            pet_name = dogs[dog]['Name']
+            pet_id = dogs[dog]['ID']
+            pet_photo = dogs[dog]['CoverPhoto']
             output = '<div class="pet-list-pet">' \
                      '<div class ="pet-list-image">' \
-                     '<a href="../pet/'
-            output += petId.encode('utf-8')
+                     '<a href="'
+            output += PET_LINK_RELATIVE_PATH
+            output += 'pet/'
+            output += pet_id.encode('utf-8')
             output += '">'
-            output += '<img src = "'
 
-            if "default_" not in petPhoto:
-                output += petPhoto.encode('utf-8')
+            if pet_count <= 20:
+                output += '<img src = "'
+
+                if "default_" not in pet_photo:
+                    output += pet_photo.encode('utf-8')
+                else:
+                    output += PLACEHOLDER_IMAGE
+
+                output += '">'
+
+                # for animals after the fist 20, lazy load the pictures
             else:
+                output += '<img class="lazy" src="'
                 output += PLACEHOLDER_IMAGE
+                output += '" alt="Photo" data-src= "'
+                if "default_" not in pet_photo:
+                    output += pet_photo.encode('utf-8')
+                else:
+                    output += PLACEHOLDER_IMAGE
+                output += '">'
 
-            output += '">' \
-                     '</a>' \
-                     '</div>' \
-                     '<div class="pet-list-name">' \
-                     '<a href="../pet/'
-            output += petId.encode('utf-8')
+            output += '</a>' \
+                      '</div>' \
+                      '<div class="pet-list-name">' \
+                      '<a href="'
+            output += PET_LINK_RELATIVE_PATH
+            output += 'pet/'
+            output += pet_id.encode('utf-8')
             output += '">'
-            output += petName.encode('utf-8')
+            output += pet_name.encode('utf-8')
             output += '</a></div></div>'
             output += '\n'
             file.write(output)
         file.write("</div>")
+        file.write("<script>")
+        file.write("    $(function() {")
+        file.write("        $('.lazy').lazy();")
+        file.write("    });")
+        file.write("</script>")
 
 
 # This function accepts animal list from main and parses the dogs
