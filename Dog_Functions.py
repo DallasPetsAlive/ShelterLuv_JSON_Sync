@@ -108,7 +108,14 @@ def parse_dog_profile(animal):
     output += animal["Breed"].encode('utf-8')
     output += "<br/>\n"
 
-    output += "<b>Size: </b>Unknown <br/>\n"
+    if "Small" in animal["Size"]:
+        output += "<b>Size: </b>Small<br/>\n"
+    elif "Medium" in animal["Size"]:
+        output += "<b>Size: </b>Medium<br/>\n"
+    elif "Large" in animal["Size"]:
+        output += "<b>Size: </b>Large<br/>\n"
+    elif "Extra" in animal["Size"]:
+        output += "<b>Size: </b>Extra-Large<br/>\n"
 
     output += "</div>\n"
 
