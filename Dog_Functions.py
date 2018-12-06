@@ -91,9 +91,9 @@ def parse_dog_profile(animal):
 
     output += "<div class=\"pet-profile\">\n"
     output += "<div class=\"pet-profile-images\">\n"
-    output += "<script src=\"../../wp-content/themes/Divi-child/fotorama/jquery.min.js\"></script>\n"
-    output += "<link href=\"../../wp-content/themes/Divi-child/fotorama/fotorama.css\" rel=\"stylesheet\">\n"
-    output += "<script src=\"../../wp-content/themes/Divi-child/fotorama/fotorama.js\"></script>\n"
+    output += "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js\"></script>\n"
+    output += "<link href=\"https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css\" rel=\"stylesheet\">\n"
+    output += "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js\"></script>\n"
 
     output += "<div class =\"fotorama\" data-nav=\"thumbs\" data-allowfullscreen=\"true\">\n"
 
@@ -136,9 +136,10 @@ def parse_dog_profile(animal):
     output += animal["Sex"].encode('utf-8')
     output += "<br/>\n"
 
-    output += "<b>Breed(s): </b>"
-    output += animal["Breed"].encode('utf-8')
-    output += "<br/>\n"
+    if animal["Breed"] is not None:
+        output += "<b>Breed(s): </b>"
+        output += animal["Breed"].encode('utf-8')
+        output += "<br/>\n"
 
     if "Small" in animal["Size"]:
         output += "<b>Size: </b>Small<br/>\n"

@@ -17,11 +17,11 @@ def shelterluv_sync():
     headers = {'x-api-key': API_KEY}
     offset = 0
     animals_dict = {}
-    total_count = 0
+    # total_count = 0
 
     while 1:
         url = 'https://www.shelterluv.com/api/v1/animals?status_type=publishable&offset=' + str(offset)
-        print 'fetching ' + url
+        # print 'fetching ' + url
         response = requests.get(url, headers=headers)
 
         # check http response code
