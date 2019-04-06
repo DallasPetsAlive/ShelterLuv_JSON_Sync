@@ -154,7 +154,10 @@ def parse_dog_profile(animal):
 
     output += "<a class=\"pet-profile-top-adopt-button\" href=\"https://www.shelterluv.com/matchme/adopt/DPA-A-"
     output += animal["ID"].encode('utf-8')
-    output += "?species=Dog\">Apply to Adopt "
+    output += "?species=Dog\" "
+    output += "onclick=\"ga('send', 'event', 'Dog Adoption App Button', " \
+              "'click', 'Dog Top Adoption Application Button');\""
+    output += ">Apply to Adopt "
     output += animal["Name"].encode('utf-8')
     output += "</a>\n"
 
@@ -183,7 +186,10 @@ def parse_dog_profile(animal):
 
     output += "<a class=\"et_pb_promo_button\" href=\"https://www.shelterluv.com/matchme/adopt/DPA-A-"
     output += animal["ID"].encode('utf-8')
-    output += "?species=Dog\">Go To Adoption Application</a>\n"
+    output += "?species=Dog\" "
+    output += "onclick =\"ga('send', 'event', 'Dog Adoption App Button', " \
+              "'click', 'Dog Bottom Adoption Application Button');\""
+    output += ">Go To Adoption Application</a>\n"
 
     output += "</div></div></div>"
 
