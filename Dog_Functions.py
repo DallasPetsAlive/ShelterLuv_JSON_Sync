@@ -30,7 +30,7 @@ def generate_dog_list(dogs):
         file.write("<div class=\"jplist-dd-item\"")
         file.write(" data-path=\".pet-list-name\"")
         file.write(" data-order=\"asc\"")
-        file.write(" data-type=\"text\"> Name A-Z </div>")
+        file.write(" data-type=\"text\"> Name A - Z </div>")
 
         file.write("<div class=\"jplist-dd-item\"")
         file.write(" data-path=\".pet-list-name\"")
