@@ -110,3 +110,4 @@ dev/Local_Defines.py
 dev/ShelterLuv_JSON_Sync.py
 dev/dog_list.php
 venv3/
+backup/*
