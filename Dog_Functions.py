@@ -30,13 +30,23 @@ def generate_dog_list(dogs):
         file.write("<div class=\"jplist-dd-item\"")
         file.write(" data-path=\".pet-list-name\"")
         file.write(" data-order=\"asc\"")
-        file.write(" data-type=\"text\"")
-        file.write(" data-selected=\"true\"> Name A-Z </div>")
+        file.write(" data-type=\"text\"> Name A-Z </div>")
 
         file.write("<div class=\"jplist-dd-item\"")
         file.write(" data-path=\".pet-list-name\"")
         file.write(" data-order=\"desc\"")
         file.write(" data-type=\"text\"> Name Z - A </div>")
+
+        file.write("<div class=\"jplist-dd-item\"")
+        file.write(" data-path=\".pet-list-intake-date\"")
+        file.write(" data-order=\"asc\"")
+        file.write(" data-type=\"number\" data-selected=\"true\"> Longest Stays First </div>")
+
+        file.write("<div class=\"jplist-dd-item\"")
+        file.write(" data-path=\".pet-list-intake-date\"")
+        file.write(" data-order=\"desc\"")
+        file.write(" data-type=\"number\"> Newest Arrivals First </div>")
+
         file.write("</div></div></div></div>")
 
         file.write("<div data-jplist-group=\"group1\" class=\"pet-list\">")
@@ -59,7 +69,7 @@ def generate_dog_list(dogs):
             output += pet_id
             output += '">'
 
-            if pet_count <= 20:
+            """if pet_count <= 20:
                 output += '<img src = "'
 
                 if "default_" not in pet_photo:
@@ -67,18 +77,19 @@ def generate_dog_list(dogs):
                 else:
                     output += PLACEHOLDER_IMAGE
 
-                output += '">'
+                output += '">'"""
 
                 # for animals after the fist 20, lazy load the pictures
+            #else:
+
+            output += '<img class="lazy" src="'
+            output += PLACEHOLDER_IMAGE
+            output += '" alt="Photo" data-src= "'
+            if "default_" not in pet_photo:
+                output += pet_photo
             else:
-                output += '<img class="lazy" src="'
                 output += PLACEHOLDER_IMAGE
-                output += '" alt="Photo" data-src= "'
-                if "default_" not in pet_photo:
-                    output += pet_photo
-                else:
-                    output += PLACEHOLDER_IMAGE
-                output += '">'
+            output += '">'
 
             output += '</a>' \
                       '</div>' \
@@ -89,7 +100,11 @@ def generate_dog_list(dogs):
             output += pet_id
             output += '">'
             output += pet_name
-            output += '</a></div></div>'
+            output += '</a></div>'
+            output += '<div class="pet-list-intake-date hidden">'
+            output += dogs[dog]['LastIntakeUnixTime']
+            output += '</div>'
+            output += '</div>'
             output += '\n'
             file.write(output)
         file.write("</div>")
