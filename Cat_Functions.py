@@ -13,7 +13,43 @@ def generate_cat_list(cats):
         file.write("<script type=\"text/javascript\" src=\"")
         file.write(LIST_THEME_PATH)
         file.write("lazy/jquery.lazy.min.js\"></script>")
-        file.write("<div class=\"pet-list\">")
+
+        file.write("<link href=\"")
+        file.write(LIST_THEME_PATH)
+        file.write("jplist/jplist.styles.css\" rel=\"stylesheet\" type=\"text/css\" />")
+
+        file.write("<div class =\"sort-filter-options-parent\"><div class=\"sort-filter-options\">")
+        file.write("<div data-jplist-control=\"dropdown-sort\" class=\"jplist-dd\"")
+        file.write(" data-group=\"group1\"")
+        file.write(" data-name=\"sorttitle\">")
+
+        file.write("<div data-type=\"panel\" class=\"jplist-dd-panel\"> Sort by </div>")
+        file.write("<div data-type=\"content\" class=\"jplist-dd-content\">")
+        file.write("<div class=\"jplist-dd-item\" data-path=\"default\"> Sort by </div>")
+
+        file.write("<div class=\"jplist-dd-item\"")
+        file.write(" data-path=\".pet-list-name\"")
+        file.write(" data-order=\"asc\"")
+        file.write(" data-type=\"text\"> Name A - Z </div>")
+
+        file.write("<div class=\"jplist-dd-item\"")
+        file.write(" data-path=\".pet-list-name\"")
+        file.write(" data-order=\"desc\"")
+        file.write(" data-type=\"text\"> Name Z - A </div>")
+
+        file.write("<div class=\"jplist-dd-item\"")
+        file.write(" data-path=\".pet-list-intake-date\"")
+        file.write(" data-order=\"asc\"")
+        file.write(" data-type=\"number\" data-selected=\"true\"> Longest Stays First </div>")
+
+        file.write("<div class=\"jplist-dd-item\"")
+        file.write(" data-path=\".pet-list-intake-date\"")
+        file.write(" data-order=\"desc\"")
+        file.write(" data-type=\"number\"> Newest Arrivals First </div>")
+
+        file.write("</div></div></div></div>")
+
+        file.write("<div data-jplist-group=\"group1\" class=\"pet-list\">")
 
         pet_count = 0
 
@@ -25,7 +61,7 @@ def generate_cat_list(cats):
             pet_name = cats[cat]['Name']
             pet_id = cats[cat]['ID']
             pet_photo = cats[cat]['CoverPhoto']
-            output = '<div class="pet-list-pet">' \
+            output = '<div data-jplist-item class="pet-list-pet">' \
                      '<div class ="pet-list-image">' \
                      '<a href="'
             output += PET_LINK_RELATIVE_PATH
@@ -33,7 +69,7 @@ def generate_cat_list(cats):
             output += pet_id
             output += '">'
 
-            if pet_count <= 20:
+            """if pet_count <= 20:
                 output += '<img src = "'
 
                 if "default_" not in pet_photo:
@@ -44,15 +80,15 @@ def generate_cat_list(cats):
                 output += '">'
 
                 # for animals after the fist 20, lazy load the pictures
+            else:"""
+            output += '<img class="lazy" src="'
+            output += PLACEHOLDER_IMAGE
+            output += '" alt="Photo" data-src= "'
+            if "default_" not in pet_photo:
+                output += pet_photo
             else:
-                output += '<img class="lazy" src="'
                 output += PLACEHOLDER_IMAGE
-                output += '" alt="Photo" data-src= "'
-                if "default_" not in pet_photo:
-                    output += pet_photo
-                else:
-                    output += PLACEHOLDER_IMAGE
-                output += '">'
+            output += '">'
 
             output += '</a>' \
                       '</div>' \
@@ -63,7 +99,11 @@ def generate_cat_list(cats):
             output += pet_id
             output += '">'
             output += pet_name
-            output += '</a></div></div>'
+            output += '</a></div>'
+            output += '<div class="pet-list-intake-date hidden">'
+            output += cats[cat]['LastIntakeUnixTime']
+            output += '</div>'
+            output += '</div>'
             output += '\n'
             file.write(output)
         file.write("</div>")
@@ -72,6 +112,11 @@ def generate_cat_list(cats):
         file.write("        $('.lazy').lazy();")
         file.write("    });")
         file.write("</script>")
+
+        file.write("<script src=\"")
+        file.write(LIST_THEME_PATH)
+        file.write("jplist/jplist.min.js\"></script>")
+        file.write("<script>jplist.init();</script>")
 
 
 # This function accepts animal list from main and parses the dogs
