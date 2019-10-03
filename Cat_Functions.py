@@ -30,14 +30,14 @@ def generate_cat_list(cats):
                      '<a href="'
             output += PET_LINK_RELATIVE_PATH
             output += 'pet/'
-            output += pet_id.encode('utf-8')
+            output += pet_id
             output += '">'
 
             if pet_count <= 20:
                 output += '<img src = "'
 
                 if "default_" not in pet_photo:
-                    output += pet_photo.encode('utf-8')
+                    output += pet_photo
                 else:
                     output += PLACEHOLDER_IMAGE
 
@@ -49,7 +49,7 @@ def generate_cat_list(cats):
                 output += PLACEHOLDER_IMAGE
                 output += '" alt="Photo" data-src= "'
                 if "default_" not in pet_photo:
-                    output += pet_photo.encode('utf-8')
+                    output += pet_photo
                 else:
                     output += PLACEHOLDER_IMAGE
                 output += '">'
@@ -60,9 +60,9 @@ def generate_cat_list(cats):
                       '<a href="'
             output += PET_LINK_RELATIVE_PATH
             output += 'pet/'
-            output += pet_id.encode('utf-8')
+            output += pet_id
             output += '">'
-            output += pet_name.encode('utf-8')
+            output += pet_name
             output += '</a></div></div>'
             output += '\n'
             file.write(output)
@@ -100,7 +100,7 @@ def parse_cat_profile(animal):
     if len(animal["Photos"]) > 0:
         for photo in animal["Photos"]:
             output += "<img src=\""
-            output += photo.encode('utf-8')
+            output += photo
             output += "\">\n"
     else:
         output += "<img src=\""
@@ -112,13 +112,13 @@ def parse_cat_profile(animal):
 
     output += "<div class=\"pet-profile-data\">\n"
     output += "<div class=\"pet-profile-name\">\n"
-    output += animal["Name"].encode('utf-8')
+    output += animal["Name"]
     output += "<br/>\n"
     output += "</div>\n"
 
     output += "<div class=\"pet-profile-other-data\">\n"
     output += "<b>ID: </b>DPA-A-"
-    output += animal["ID"].encode('utf-8')
+    output += animal["ID"]
     output += "<br/>\n"
 
     output += "<b>Age: </b>"
@@ -133,23 +133,23 @@ def parse_cat_profile(animal):
     output += "<br/>\n"
 
     output += "<b>Sex: </b>"
-    output += animal["Sex"].encode('utf-8')
+    output += animal["Sex"]
     output += "<br/>\n"
 
     if animal["Breed"] is not None:
         output += "<b>Breed(s): </b>"
-        output += animal["Breed"].encode('utf-8')
+        output += animal["Breed"]
         output += "<br/>\n"
 
     output += "</div>\n"
 
     output += "<a class=\"pet-profile-top-adopt-button\" href=\"https://www.shelterluv.com/matchme/adopt/DPA-A-"
-    output += animal["ID"].encode('utf-8')
+    output += animal["ID"]
     output += "?species=Cat\" "
     output += "onclick=\"ga('send', 'event', 'Cat Adoption App Button', " \
               "'click', 'Cat Top Adoption Application Button');\""
     output += ">Apply to Adopt "
-    output += animal["Name"].encode('utf-8')
+    output += animal["Name"]
     output += "</a>\n"
 
     output += "</div>\n"
@@ -157,7 +157,7 @@ def parse_cat_profile(animal):
     output += "<div class=\"pet-profile-description\">\n"
     output += "<div class=\"pet-profile-description-title\">\n"
     output += "Meet "
-    output += animal["Name"].encode('utf-8')
+    output += animal["Name"]
     output += "! <br/>\n"
     output += "</div>"
 
@@ -165,18 +165,18 @@ def parse_cat_profile(animal):
         output += "We don't have much information on this animal yet. " \
                   "If you'd like to find out more, please email adopt@dallaspetsalive.org."
     else:
-        output += animal["Description"].encode('utf-8')
+        output += animal["Description"]
 
     output += "<div class=\"et_pb_promo et_pb_bg_layout_dark et_pb_text_align_center pet-profile-adopt-bottom\""
     output += " style=\"background-color: #006cb7;\">\n"
     output += "<div class=\"et_pb_promo_description\">"
     output += "<h2>Apply to Adopt "
-    output += animal["Name"].encode('utf-8')
+    output += animal["Name"]
     output += " Today</h2>\n"
     output += "</div>"
 
     output += "<a class=\"et_pb_promo_button\" href=\"https://www.shelterluv.com/matchme/adopt/DPA-A-"
-    output += animal["ID"].encode('utf-8')
+    output += animal["ID"]
     output += "?species=Cat\" "
     output += "onclick =\"ga('send', 'event', 'Cat Adoption App Button', " \
               "'click', 'Cat Bottom Adoption Application Button');\""

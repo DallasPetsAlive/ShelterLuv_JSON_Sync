@@ -13,7 +13,33 @@ def generate_dog_list(dogs):
         file.write("<script type=\"text/javascript\" src=\"")
         file.write(LIST_THEME_PATH)
         file.write("lazy/jquery.lazy.min.js\"></script>")
-        file.write("<div class=\"pet-list\">")
+
+        file.write("<link href=\"")
+        file.write(LIST_THEME_PATH)
+        file.write("jplist/jplist.styles.css\" rel=\"stylesheet\" type=\"text/css\" />")
+
+        file.write("<div class =\"sort-filter-options-parent\"><div class=\"sort-filter-options\">")
+        file.write("<div data-jplist-control=\"dropdown-sort\" class=\"jplist-dd\"" )
+        file.write(" data-group=\"group1\"")
+        file.write(" data-name=\"sorttitle\">")
+
+        file.write("<div data-type=\"panel\" class=\"jplist-dd-panel\"> Sort by </div>")
+        file.write("<div data-type=\"content\" class=\"jplist-dd-content\">")
+        file.write("<div class=\"jplist-dd-item\" data-path=\"default\"> Sort by </div>")
+
+        file.write("<div class=\"jplist-dd-item\"")
+        file.write(" data-path=\".pet-list-name\"")
+        file.write(" data-order=\"asc\"")
+        file.write(" data-type=\"text\"")
+        file.write(" data-selected=\"true\"> Name A-Z </div>")
+
+        file.write("<div class=\"jplist-dd-item\"")
+        file.write(" data-path=\".pet-list-name\"")
+        file.write(" data-order=\"desc\"")
+        file.write(" data-type=\"text\"> Name Z - A </div>")
+        file.write("</div></div></div></div>")
+
+        file.write("<div data-jplist-group=\"group1\" class=\"pet-list\">")
 
         pet_count = 0
 
@@ -25,19 +51,19 @@ def generate_dog_list(dogs):
             pet_name = dogs[dog]['Name']
             pet_id = dogs[dog]['ID']
             pet_photo = dogs[dog]['CoverPhoto']
-            output = '<div class="pet-list-pet">' \
+            output = '<div data-jplist-item class="pet-list-pet">' \
                      '<div class ="pet-list-image">' \
                      '<a href="'
             output += PET_LINK_RELATIVE_PATH
             output += 'pet/'
-            output += pet_id.encode('utf-8')
+            output += pet_id
             output += '">'
 
             if pet_count <= 20:
                 output += '<img src = "'
 
                 if "default_" not in pet_photo:
-                    output += pet_photo.encode('utf-8')
+                    output += pet_photo
                 else:
                     output += PLACEHOLDER_IMAGE
 
@@ -49,7 +75,7 @@ def generate_dog_list(dogs):
                 output += PLACEHOLDER_IMAGE
                 output += '" alt="Photo" data-src= "'
                 if "default_" not in pet_photo:
-                    output += pet_photo.encode('utf-8')
+                    output += pet_photo
                 else:
                     output += PLACEHOLDER_IMAGE
                 output += '">'
@@ -60,9 +86,9 @@ def generate_dog_list(dogs):
                       '<a href="'
             output += PET_LINK_RELATIVE_PATH
             output += 'pet/'
-            output += pet_id.encode('utf-8')
+            output += pet_id
             output += '">'
-            output += pet_name.encode('utf-8')
+            output += pet_name
             output += '</a></div></div>'
             output += '\n'
             file.write(output)
@@ -72,6 +98,11 @@ def generate_dog_list(dogs):
         file.write("        $('.lazy').lazy();")
         file.write("    });")
         file.write("</script>")
+
+        file.write("<script src=\"")
+        file.write(LIST_THEME_PATH)
+        file.write("jplist/jplist.min.js\"></script>")
+        file.write("<script>jplist.init();</script>")
 
 
 # This function accepts animal list from main and parses the dogs
@@ -100,7 +131,7 @@ def parse_dog_profile(animal):
     if len(animal["Photos"]) > 0:
         for photo in animal["Photos"]:
             output += "<img src=\""
-            output += photo.encode('utf-8')
+            output += photo
             output += "\">\n"
     else:
         output += "<img src=\""
@@ -112,13 +143,13 @@ def parse_dog_profile(animal):
 
     output += "<div class=\"pet-profile-data\">\n"
     output += "<div class=\"pet-profile-name\">\n"
-    output += animal["Name"].encode('utf-8')
+    output += animal["Name"]
     output += "<br/>\n"
     output += "</div>\n"
 
     output += "<div class=\"pet-profile-other-data\">\n"
     output += "<b>ID: </b>DPA-A-"
-    output += animal["ID"].encode('utf-8')
+    output += animal["ID"]
     output += "<br/>\n"
 
     output += "<b>Age: </b>"
@@ -133,12 +164,12 @@ def parse_dog_profile(animal):
     output += "<br/>\n"
 
     output += "<b>Sex: </b>"
-    output += animal["Sex"].encode('utf-8')
+    output += animal["Sex"]
     output += "<br/>\n"
 
     if animal["Breed"] is not None:
         output += "<b>Breed(s): </b>"
-        output += animal["Breed"].encode('utf-8')
+        output += animal["Breed"]
         output += "<br/>\n"
 
     if "Small" in animal["Size"]:
@@ -153,12 +184,12 @@ def parse_dog_profile(animal):
     output += "</div>\n"
 
     output += "<a class=\"pet-profile-top-adopt-button\" href=\"https://www.shelterluv.com/matchme/adopt/DPA-A-"
-    output += animal["ID"].encode('utf-8')
+    output += animal["ID"]
     output += "?species=Dog\" "
     output += "onclick=\"ga('send', 'event', 'Dog Adoption App Button', " \
               "'click', 'Dog Top Adoption Application Button');\""
     output += ">Apply to Adopt "
-    output += animal["Name"].encode('utf-8')
+    output += animal["Name"]
     output += "</a>\n"
 
     output += "</div>\n"
@@ -166,7 +197,7 @@ def parse_dog_profile(animal):
     output += "<div class=\"pet-profile-description\">\n"
     output += "<div class=\"pet-profile-description-title\">\n"
     output += "Meet "
-    output += animal["Name"].encode('utf-8')
+    output += animal["Name"]
     output += "! <br/>\n"
     output += "</div>"
 
@@ -174,18 +205,18 @@ def parse_dog_profile(animal):
         output += "We don't have much information on this animal yet. " \
                   "If you'd like to find out more, please email adopt@dallaspetsalive.org."
     else:
-        output += animal["Description"].encode('utf-8')
+        output += animal["Description"]
 
     output += "<div class=\"et_pb_promo et_pb_bg_layout_dark et_pb_text_align_center pet-profile-adopt-bottom\""
     output += " style=\"background-color: #006cb7;\">\n"
     output += "<div class=\"et_pb_promo_description\">"
     output += "<h2>Apply to Adopt "
-    output += animal["Name"].encode('utf-8')
+    output += animal["Name"]
     output += " Today</h2>\n"
     output += "</div>"
 
     output += "<a class=\"et_pb_promo_button\" href=\"https://www.shelterluv.com/matchme/adopt/DPA-A-"
-    output += animal["ID"].encode('utf-8')
+    output += animal["ID"]
     output += "?species=Dog\" "
     output += "onclick =\"ga('send', 'event', 'Dog Adoption App Button', " \
               "'click', 'Dog Bottom Adoption Application Button');\""

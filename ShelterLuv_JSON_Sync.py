@@ -26,26 +26,26 @@ def shelterluv_sync():
 
         # check http response code
         if response.status_code != 200:
-            print 'invalid response code'
+            print('invalid response code')
             exit(1)
 
         response_json = response.json()
 
         if response_json["success"] != 1:
-            print 'invalid attempt'
+            print('invalid attempt')
             exit(2)
 
         total_count = response_json["total_count"]
 
         if total_count == 0:
-            print 'no animals found - error'
+            print('no animals found - error')
             exit(3)
 
         # add each animal to the dict
         for animal in response_json["animals"]:
             ID = animal["ID"]
             if ID in animals_dict:
-                print 'animal already exists'
+                print('animal already exists')
                 continue
 
             animals_dict[ID] = animal
@@ -58,7 +58,7 @@ def shelterluv_sync():
 
     # we should have all the animals now
     if str(animals_dict.__len__()) != str(total_count):
-        print 'something went wrong, missing animals'
+        print('something went wrong, missing animals')
 
     # write animals out to file for searching later
     with open(ANIMALS_FILE, 'w') as animals_file_obj:
@@ -113,7 +113,7 @@ def parse_profiles(animals):
     # delete stagnant pages
     for profile in profiles_current:
         if profile not in output_file_list:
-            print "deleting " + PROFILES_DIRECTORY + profile
+            print("deleting " + PROFILES_DIRECTORY + profile)
             if os.path.isfile(PROFILES_DIRECTORY + profile):
                 os.remove(PROFILES_DIRECTORY + profile)
 
