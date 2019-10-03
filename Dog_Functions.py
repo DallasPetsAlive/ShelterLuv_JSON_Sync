@@ -114,6 +114,8 @@ def generate_dog_list(dogs):
         file.write("    });")
         file.write("</script>")
 
+        file.write("<script src=\"//cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js\"></script>")
+
         file.write("<script src=\"")
         file.write(LIST_THEME_PATH)
         file.write("jplist/jplist.min.js\"></script>")
