@@ -212,7 +212,10 @@ def parse_cat_profile(animal):
         output += "We don't have much information on this animal yet. " \
                   "If you'd like to find out more, please email adopt@dallaspetsalive.org."
     else:
-        output += animal["Description"]
+        output += "<p>"
+        description = animal["Description"].replace("\n\n", "</p><p>")
+        output += description
+        output += "</p>"
 
     output += "<div class=\"et_pb_promo et_pb_bg_layout_dark et_pb_text_align_center pet-profile-adopt-bottom\""
     output += " style=\"background-color: #006cb7;\">\n"
