@@ -40,7 +40,7 @@ def generate_cat_list(cats):
         file.write("<div class=\"jplist-dd-item\"")
         file.write(" data-path=\".pet-list-intake-date\"")
         file.write(" data-order=\"asc\"")
-        file.write(" data-type=\"number\" data-selected=\"true\"> Longest Stays First </div>")
+        file.write(" data-type=\"number\" data-selected=\"true\"> Featured Pets First </div>")
 
         file.write("<div class=\"jplist-dd-item\"")
         file.write(" data-path=\".pet-list-intake-date\"")
