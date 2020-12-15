@@ -13,120 +13,138 @@ from Local_Defines import (
 # This function accepts the list of dogs and
 # generates the formatted list for browser output
 def generate_dog_list(dogs):
-    with open(DOG_LIST_FILE, 'w+') as file:
-        file.write("<script src=\"")
-        file.write(LIST_THEME_PATH)
-        file.write("lazy/jquery.min.js\"></script>")
-        file.write("<script type=\"text/javascript\" src=\"")
-        file.write(LIST_THEME_PATH)
-        file.write("lazy/jquery.lazy.min.js\"></script>")
+    doc, tag, text = Doc().tagtext()
 
-        file.write("<link href=\"")
-        file.write(LIST_THEME_PATH)
-        file.write("jplist/jplist.styles.css\" rel=\"stylesheet\" type=\"text/css\" />")
+    doc.asis(
+        "<script src=\"" +
+        LIST_THEME_PATH +
+        "lazy/jquery.min.js\"></script>"
+    )
+    doc.asis(
+        "<script type=\"text/javascript\" src=\"" +
+        LIST_THEME_PATH +
+        "lazy/jquery.lazy.min.js\"></script>"
+    )
+    doc.asis(
+        "<link href=\"" +
+        LIST_THEME_PATH +
+        "jplist/jplist.styles.css\" rel=\"stylesheet\" type=\"text/css\" />"
+    )
 
-        file.write("<div class =\"sort-filter-options-parent\"><div class=\"sort-filter-options\">")
-        file.write("<div data-jplist-control=\"dropdown-sort\" class=\"jplist-dd\"" )
-        file.write(" data-group=\"group1\"")
-        file.write(" data-name=\"sorttitle\">")
+    with tag("div", klass="sort-filter-options-parent"):
+        with tag("div", klass="sort-filter-options"):
+            with tag(
+                "div",
+                ("data-jplist-control", "dropdown-sort"),
+                ("data-group", "group1"),
+                ("data-name", "sorttitle"),
+                klass="jplist-dd",
+            ):
+                with tag(
+                    "div",
+                    ("data-type", "panel"),
+                    klass="jplist-dd-panel",
+                ):
+                    text(" Sort by ")
+                with tag(
+                    "div",
+                    ("data-type", "content"),
+                    klass="jplist-dd-content",
+                ):
+                    # sort by options
+                    with tag(
+                        "div",
+                        ("data-path", "default"),
+                        klass="jplist-dd-item",
+                    ):
+                        text(" Sort by ")
+                    with tag(
+                        "div",
+                        ("data-path", ".pet-list-name"),
+                        ("data-order", "asc"),
+                        ("data-type", "text"),
+                        klass="jplist-dd-item",
+                    ):
+                        text(" Name A - Z ")
+                    with tag(
+                        "div",
+                        ("data-path", ".pet-list-name"),
+                        ("data-order", "desc"),
+                        ("data-type", "text"),
+                        klass="jplist-dd-item",
+                    ):
+                        text(" Name Z - A ")
+                    with tag(
+                        "div",
+                        ("data-path", ".pet-list-intake-date"),
+                        ("data-order", "asc"),
+                        ("data-type", "number"),
+                        ("data-selected", "true"),
+                        klass="jplist-dd-item",
+                    ):
+                        text(" Featured Pets First ")
+                    with tag(
+                        "div",
+                        ("data-path", ".pet-list-intake-date"),
+                        ("data-order", "desc"),
+                        ("data-type", "number"),
+                        ("data-selected", "true"),
+                        klass="jplist-dd-item",
+                    ):
+                        text(" Newest Arrivals First ")
 
-        file.write("<div data-type=\"panel\" class=\"jplist-dd-panel\"> Sort by </div>")
-        file.write("<div data-type=\"content\" class=\"jplist-dd-content\">")
-        file.write("<div class=\"jplist-dd-item\" data-path=\"default\"> Sort by </div>")
-
-        file.write("<div class=\"jplist-dd-item\"")
-        file.write(" data-path=\".pet-list-name\"")
-        file.write(" data-order=\"asc\"")
-        file.write(" data-type=\"text\"> Name A - Z </div>")
-
-        file.write("<div class=\"jplist-dd-item\"")
-        file.write(" data-path=\".pet-list-name\"")
-        file.write(" data-order=\"desc\"")
-        file.write(" data-type=\"text\"> Name Z - A </div>")
-
-        file.write("<div class=\"jplist-dd-item\"")
-        file.write(" data-path=\".pet-list-intake-date\"")
-        file.write(" data-order=\"asc\"")
-        file.write(" data-type=\"number\" data-selected=\"true\"> Featured Pets First </div>")
-
-        file.write("<div class=\"jplist-dd-item\"")
-        file.write(" data-path=\".pet-list-intake-date\"")
-        file.write(" data-order=\"desc\"")
-        file.write(" data-type=\"number\"> Newest Arrivals First </div>")
-
-        file.write("</div></div></div></div>")
-
-        file.write("<div data-jplist-group=\"group1\" class=\"pet-list\">")
-
+    with tag("div", ("data-jplist-group", "group1"), klass="pet-list"):
         pet_count = 0
-
         for dog in dogs:
             pet_count += 1
 
-            # for dev this is ../../
-            # for local this is ../
             pet_name = dogs[dog]['Name']
             pet_id = dogs[dog]['ID']
             pet_photo = dogs[dog]['CoverPhoto']
-            output = '<div data-jplist-item class="pet-list-pet">' \
-                     '<div class ="pet-list-image">' \
-                     '<a href="'
-            output += PET_LINK_RELATIVE_PATH
-            output += 'pet/'
-            output += pet_id
-            output += '">'
 
-            """if pet_count <= 20:
-                output += '<img src = "'
+            with tag(
+                "div",
+                ("data-jplist-item"),
+                klass="pet-list-pet",
+            ):
+                pet_link = PET_LINK_RELATIVE_PATH + "pet/" + pet_id
+                with tag("a", href=pet_link):
+                    with tag("div", klass="pet-list-image"):
+                        pet_photo_link = pet_photo
+                        if "default_" in pet_photo:
+                            pet_photo_link = PLACEHOLDER_IMAGE
+                        doc.stag(
+                            "img",
+                            ("data-src", pet_photo_link),
+                            src=PLACEHOLDER_IMAGE,
+                            alt="Photo",
+                            klass="lazy",
+                        )
+                    with tag("div", klass="pet-list-name"):
+                        text(pet_name)
+                    with tag("div", klass="pet-list-intake-date hidden"):
+                        text(dogs[dog]['LastIntakeUnixTime'])
 
-                if "default_" not in pet_photo:
-                    output += pet_photo
-                else:
-                    output += PLACEHOLDER_IMAGE
+    doc.asis(
+        "<script>" +
+        "    $(function() {" +
+        "        $('.lazy').lazy();" +
+        "    });" +
+        "</script>"
+    )
+    doc.asis(
+        "<script src=\"//cdnjs.cloudflare.com/ajax/libs/babel-polyfill" +
+        "/6.26.0/polyfill.min.js\"></script>"
+    )
+    doc.asis(
+        "<script src=\"" +
+        LIST_THEME_PATH +
+        "jplist/jplist.min.js\"></script>" +
+        "<script>jplist.init();</script>"
+    )
 
-                output += '">'"""
-
-                # for animals after the fist 20, lazy load the pictures
-            #else:
-
-            output += '<img class="lazy" src="'
-            output += PLACEHOLDER_IMAGE
-            output += '" alt="Photo" data-src= "'
-            if "default_" not in pet_photo:
-                output += pet_photo
-            else:
-                output += PLACEHOLDER_IMAGE
-            output += '">'
-
-            output += '</a>' \
-                      '</div>' \
-                      '<div class="pet-list-name">' \
-                      '<a href="'
-            output += PET_LINK_RELATIVE_PATH
-            output += 'pet/'
-            output += pet_id
-            output += '">'
-            output += pet_name
-            output += '</a></div>'
-            output += '<div class="pet-list-intake-date hidden">'
-            output += dogs[dog]['LastIntakeUnixTime']
-            output += '</div>'
-            output += '</div>'
-            output += '\n'
-            file.write(output)
-        file.write("</div>")
-        file.write("<script>")
-        file.write("    $(function() {")
-        file.write("        $('.lazy').lazy();")
-        file.write("    });")
-        file.write("</script>")
-
-        file.write("<script src=\"//cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js\"></script>")
-
-        file.write("<script src=\"")
-        file.write(LIST_THEME_PATH)
-        file.write("jplist/jplist.min.js\"></script>")
-        file.write("<script>jplist.init();</script>")
+    with open(DOG_LIST_FILE, 'w+') as file:
+        file.write(indent(doc.getvalue()))
 
 
 # This function accepts animal list from main and parses the dogs
