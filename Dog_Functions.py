@@ -1,12 +1,19 @@
 # Dog functions for ShelterLuv sync
 # Developed for Dallas Pets Alive by Katie Patterson www.kirska.com
 import collections
-from Local_Defines import DOG_LIST_FILE, PLACEHOLDER_IMAGE, LIST_THEME_PATH, PET_LINK_RELATIVE_PATH
+from yattag import Doc, indent
+from Local_Defines import (
+    DOG_LIST_FILE,
+    PLACEHOLDER_IMAGE,
+    LIST_THEME_PATH,
+    PET_LINK_RELATIVE_PATH,
+)
 
 
-# This function accepts the list of dogs and generates the formatted list for browser output
+# This function accepts the list of dogs and
+# generates the formatted list for browser output
 def generate_dog_list(dogs):
-    with open(DOG_LIST_FILE, 'w') as file:
+    with open(DOG_LIST_FILE, 'w+') as file:
         file.write("<script src=\"")
         file.write(LIST_THEME_PATH)
         file.write("lazy/jquery.min.js\"></script>")
@@ -135,113 +142,114 @@ def parse_dogs(animals_in):
 
 
 def parse_dog_profile(animal):
-    output = ""
+    doc, tag, text, line = Doc().ttl()
 
-    output += "<div class=\"pet-profile\">\n"
-    output += "<div class=\"pet-profile-images\">\n"
-    output += "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js\"></script>\n"
-    output += "<link href=\"https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css\" rel=\"stylesheet\">\n"
-    output += "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js\"></script>\n"
+    with tag("div", klass="pet-profile"):
+        with tag("div", klass="pet-profile-images"):
+            doc.asis(
+                "<script src=\"https://ajax.googleapis.com/ajax/" +
+                "libs/jquery/1.11.1/jquery.min.js\"></script>"
+            )
+            doc.asis(
+                "<link href=\"https://cdnjs.cloudflare.com/ajax/" +
+                "libs/fotorama/4.6.4/fotorama.css\" rel=\"stylesheet\">"
+            )
+            doc.asis(
+                "<script src=\"https://cdnjs.cloudflare.com/ajax/" +
+                "libs/fotorama/4.6.4/fotorama.js\"></script>"
+            )
+            with tag(
+                "div",
+                ("data-nav", "thumbs"),
+                ("data-allowfullscreen", "true"),
+                klass="fotorama"
+            ):
+                if len(animal["Photos"]) > 0:
+                    for photo in animal["Photos"]:
+                        doc.stag("img", src=photo)
+                else:
+                    doc.stag("img", src=PLACEHOLDER_IMAGE)
 
-    output += "<div class =\"fotorama\" data-nav=\"thumbs\" data-allowfullscreen=\"true\">\n"
+        with tag("div", klass="pet-profile-data"):
+            with tag("div", klass="pet-profile-name"):
+                text(animal["Name"])
+                doc.stag("br")
 
-    if len(animal["Photos"]) > 0:
-        for photo in animal["Photos"]:
-            output += "<img src=\""
-            output += photo
-            output += "\">\n"
-    else:
-        output += "<img src=\""
-        output += PLACEHOLDER_IMAGE
-        output += "\">\n"
+            with tag("div", klass="pet-profile-other-data"):
+                line("b", "ID: ")
+                text(animal["ID"])
+                doc.stag("br")
 
-    output += "</div>\n"
-    output += "</div>\n"
+                line("b", "Age: ")
+                if animal["Age"] < 3:
+                    text("Puppy")
+                elif animal["Age"] < 7:
+                    text("Young")
+                elif animal["Age"] > 98:
+                    text("Senior")
+                else:
+                    text("Adult")
+                doc.stag("br")
 
-    output += "<div class=\"pet-profile-data\">\n"
-    output += "<div class=\"pet-profile-name\">\n"
-    output += animal["Name"]
-    output += "<br/>\n"
-    output += "</div>\n"
+                line("b", "Sex: ")
+                text(animal["Sex"])
+                doc.stag("br")
 
-    output += "<div class=\"pet-profile-other-data\">\n"
-    output += "<b>ID: </b>DPA-A-"
-    output += animal["ID"]
-    output += "<br/>\n"
+                if animal["Breed"] is not None:
+                    line("b", "Breed(s): ")
+                    text(animal["Breed"])
+                    doc.stag("br")
 
-    output += "<b>Age: </b>"
-    if animal["Age"] < 3:
-        output += "Puppy"
-    elif animal["Age"] < 7:
-        output += "Young"
-    elif animal["Age"] > 98:
-        output += "Senior"
-    else:
-        output += "Adult"
-    output += "<br/>\n"
+                line("b", "Size: ")
+                if "Small" in animal["Size"]:
+                    text("Small")
+                elif "Medium" in animal["Size"]:
+                    text("Medium")
+                elif "Large" in animal["Size"]:
+                    text("Large")
+                elif "Extra" in animal["Size"]:
+                    text("Extra-Large")
+                doc.stag("br")
 
-    output += "<b>Sex: </b>"
-    output += animal["Sex"]
-    output += "<br/>\n"
+            adopt_link = (
+                "https://www.shelterluv.com/matchme/adopt/DPA-A-" +
+                animal["ID"] +
+                "?species=Dog"
+            )
+            with tag(
+                "a",
+                href=adopt_link,
+                klass="pet-profile-top-adopt-button"
+            ):
+                text("Apply to Adopt " + animal["Name"])
 
-    if animal["Breed"] is not None:
-        output += "<b>Breed(s): </b>"
-        output += animal["Breed"]
-        output += "<br/>\n"
+        with tag("div", klass="pet-profile-description"):
+            with tag("div", klass="pet-profile-description-title"):
+                text("Meet " + animal["Name"] + "!")
+                doc.stag("br")
 
-    if "Small" in animal["Size"]:
-        output += "<b>Size: </b>Small<br/>\n"
-    elif "Medium" in animal["Size"]:
-        output += "<b>Size: </b>Medium<br/>\n"
-    elif "Large" in animal["Size"]:
-        output += "<b>Size: </b>Large<br/>\n"
-    elif "Extra" in animal["Size"]:
-        output += "<b>Size: </b>Extra-Large<br/>\n"
+            if len(animal["Description"]) < 3:
+                text(
+                    "We don't have much information on this animal yet. " +
+                    "If you'd like to find out more, " +
+                    "please email adopt@dallaspetsalive.org."
+                )
 
-    output += "</div>\n"
+            else:
+                with tag("p"):
+                    doc.asis(animal["Description"].replace("\n\n", "</p><p>"))
 
-    output += "<a class=\"pet-profile-top-adopt-button\" href=\"https://www.shelterluv.com/matchme/adopt/DPA-A-"
-    output += animal["ID"]
-    output += "?species=Dog\" "
-    output += "onclick=\"ga('send', 'event', 'Dog Adoption App Button', " \
-              "'click', 'Dog Top Adoption Application Button');\""
-    output += ">Apply to Adopt "
-    output += animal["Name"]
-    output += "</a>\n"
+            with tag(
+                "div",
+                klass=(
+                    "et_pb_promo et_pb_bg_layout_dark" +
+                    "et_pb_text_align_center pet-profile-adopt-bottom"
+                ),
+                style="background-color: #006cb7;"
+            ):
+                with tag("div", klass="et_pb_promo_description"):
+                    line("h2", "Apply to Adopt " + animal["Name"] + " Today")
+                with tag("a", klass="et_pb_promo_button", href=adopt_link):
+                    text("Go To Adoption Application")
 
-    output += "</div>\n"
-
-    output += "<div class=\"pet-profile-description\">\n"
-    output += "<div class=\"pet-profile-description-title\">\n"
-    output += "Meet "
-    output += animal["Name"]
-    output += "! <br/>\n"
-    output += "</div>"
-
-    if len(animal["Description"]) < 3:
-        output += "We don't have much information on this animal yet. " \
-                  "If you'd like to find out more, please email adopt@dallaspetsalive.org."
-    else:
-        output += "<p>"
-        description = animal["Description"].replace("\n\n", "</p><p>")
-        output += description
-        output += "</p>"
-
-    output += "<div class=\"et_pb_promo et_pb_bg_layout_dark et_pb_text_align_center pet-profile-adopt-bottom\""
-    output += " style=\"background-color: #006cb7;\">\n"
-    output += "<div class=\"et_pb_promo_description\">"
-    output += "<h2>Apply to Adopt "
-    output += animal["Name"]
-    output += " Today</h2>\n"
-    output += "</div>"
-
-    output += "<a class=\"et_pb_promo_button\" href=\"https://www.shelterluv.com/matchme/adopt/DPA-A-"
-    output += animal["ID"]
-    output += "?species=Dog\" "
-    output += "onclick =\"ga('send', 'event', 'Dog Adoption App Button', " \
-              "'click', 'Dog Bottom Adoption Application Button');\""
-    output += ">Go To Adoption Application</a>\n"
-
-    output += "</div></div></div>"
-
-    return output
+    return indent(doc.getvalue())

@@ -6,7 +6,7 @@ from Local_Defines import OTHER_LIST_FILE, PLACEHOLDER_IMAGE, LIST_THEME_PATH, P
 
 # This function accepts the list of dogs and generates the formatted list for browser output
 def generate_other_list(pets):
-    with open(OTHER_LIST_FILE, 'w') as file:
+    with open(OTHER_LIST_FILE, 'w+') as file:
         file.write("<script src=\"")
         file.write(LIST_THEME_PATH)
         file.write("lazy/jquery.min.js\"></script>")

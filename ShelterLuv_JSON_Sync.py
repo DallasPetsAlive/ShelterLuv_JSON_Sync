@@ -61,7 +61,7 @@ def shelterluv_sync():
         print('something went wrong, missing animals')
 
     # write animals out to file for searching later
-    with open(ANIMALS_FILE, 'w') as animals_file_obj:
+    with open(ANIMALS_FILE, 'w+') as animals_file_obj:
         animals_file_obj.write(json.dumps(animals_dict))
 
     # sort the list of animals by name
@@ -101,7 +101,7 @@ def parse_profiles(animals):
         filename = animal + ".php"
         output_file_list.append(filename)
 
-        with codecs.open(PROFILES_DIRECTORY + filename, 'w') as pet_file:
+        with codecs.open(PROFILES_DIRECTORY + filename, 'w+') as pet_file:
             if animals[animal]["Type"] == "Cat":
                 output = parse_cat_profile(animals[animal])
             elif animals[animal]["Type"] == "Dog":
