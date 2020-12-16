@@ -4,10 +4,20 @@ import requests
 import collections
 import json
 import operator
-from Local_Defines import API_KEY, ANIMALS_FILE, PROFILES_DIRECTORY
-from Dog_Functions import parse_dogs, parse_dog_profile
-from Cat_Functions import parse_cats, parse_cat_profile
-from Common_Functions import parse_other_profile, parse_other
+from Local_Defines import (
+    API_KEY,
+    ANIMALS_FILE,
+    PROFILES_DIRECTORY,
+    OTHER_LIST_FILE,
+    DOG_LIST_FILE,
+    CAT_LIST_FILE
+)
+from Dog_Functions import parse_dog_profile
+from Cat_Functions import parse_cat_profile
+from Common_Functions import (
+    parse_other_profile,
+    generate_pet_list
+)
 import os
 import codecs
 
@@ -20,7 +30,10 @@ def shelterluv_sync():
     # total_count = 0
 
     while 1:
-        url = 'https://www.shelterluv.com/api/v1/animals?status_type=publishable&offset=' + str(offset)
+        url = (
+            'https://www.shelterluv.com/api/v1/' +
+            'animals?status_type=publishable&offset=' + str(offset)
+        )
         # print 'fetching ' + url
         response = requests.get(url, headers=headers)
 
@@ -68,7 +81,9 @@ def shelterluv_sync():
     name_dict = {}
     for animal in animals_dict:
         name_dict[animal] = animals_dict[animal]["Name"]
-    ordered_names = collections.OrderedDict(sorted(name_dict.items(), key=operator.itemgetter(1)))
+    ordered_names = collections.OrderedDict(
+        sorted(name_dict.items(), key=operator.itemgetter(1))
+    )
 
     ordered_animals = collections.OrderedDict()
     for animal in ordered_names:
@@ -77,17 +92,12 @@ def shelterluv_sync():
     # parse the profiles
     parse_profiles(ordered_animals)
 
-    # parse the dogs
-    parse_dogs(ordered_animals)
-
-    # parse the cats
-    parse_cats(ordered_animals)
-
-    # parse everything else
-    parse_other(ordered_animals)
+    # create the pet lists
+    parse_lists(ordered_animals)
 
 
-# This function accepts the list of animals and generates profile pages for browser output
+# This function accepts the list of animals
+# and generates profile pages for browser output
 def parse_profiles(animals):
     output_file_list = []
 
@@ -118,5 +128,23 @@ def parse_profiles(animals):
                 os.remove(PROFILES_DIRECTORY + profile)
 
 
-shelterluv_sync()
+def parse_lists(pets):
+    dog_list = collections.OrderedDict()
+    cat_list = collections.OrderedDict()
+    other_list = collections.OrderedDict()
 
+    # divide up the pets
+    for pet in pets:
+        if pets[pet]["Type"] == "Dog":
+            dog_list[pet] = pets[pet]
+        elif pets[pet]["Type"] == "Cat":
+            cat_list[pet] = pets[pet]
+        else:
+            other_list[pet] = pets[pet]
+
+    generate_pet_list(dog_list, DOG_LIST_FILE)
+    generate_pet_list(cat_list, CAT_LIST_FILE)
+    generate_pet_list(other_list, OTHER_LIST_FILE)
+
+
+shelterluv_sync()
