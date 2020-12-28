@@ -4,7 +4,7 @@ import requests
 import collections
 import json
 import operator
-from Local_Defines import (
+from local_defines import (
     API_KEY,
     ANIMALS_FILE,
     PROFILES_DIRECTORY,
@@ -12,10 +12,8 @@ from Local_Defines import (
     DOG_LIST_FILE,
     CAT_LIST_FILE
 )
-from Dog_Functions import parse_dog_profile
-from Cat_Functions import parse_cat_profile
-from Common_Functions import (
-    parse_other_profile,
+from common_functions import (
+    parse_animal_profile,
     generate_pet_list
 )
 import os
@@ -112,12 +110,7 @@ def parse_profiles(animals):
         output_file_list.append(filename)
 
         with codecs.open(PROFILES_DIRECTORY + filename, 'w+') as pet_file:
-            if animals[animal]["Type"] == "Cat":
-                output = parse_cat_profile(animals[animal])
-            elif animals[animal]["Type"] == "Dog":
-                output = parse_dog_profile(animals[animal])
-            else:
-                output = parse_other_profile(animals[animal])
+            output = parse_animal_profile(animals[animal])
             pet_file.write(output)
 
     # delete stagnant pages
