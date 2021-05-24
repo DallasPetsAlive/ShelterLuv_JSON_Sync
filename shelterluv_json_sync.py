@@ -10,7 +10,8 @@ from local_defines import (
     PROFILES_DIRECTORY,
     OTHER_LIST_FILE,
     DOG_LIST_FILE,
-    CAT_LIST_FILE
+    CAT_LIST_FILE,
+    NEW_DIGS_LIST_FILE,
 )
 from common_functions import (
     parse_animal_profile,
@@ -125,16 +126,20 @@ def parse_lists(pets):
     dog_list = collections.OrderedDict()
     cat_list = collections.OrderedDict()
     other_list = collections.OrderedDict()
+    new_digs_list = collections.OrderedDict()
 
     # divide up the pets
     for pet in pets:
-        if pets[pet]["Type"] == "Dog":
+        if pets[pet]["Status"] == "New Digs Rehoming":
+            new_digs_list[pet] = pets[pet]
+        elif pets[pet]["Type"] == "Dog":
             dog_list[pet] = pets[pet]
         elif pets[pet]["Type"] == "Cat":
             cat_list[pet] = pets[pet]
         else:
             other_list[pet] = pets[pet]
 
+    generate_pet_list(new_digs_list, NEW_DIGS_LIST_FILE)
     generate_pet_list(dog_list, DOG_LIST_FILE)
     generate_pet_list(cat_list, CAT_LIST_FILE)
     generate_pet_list(other_list, OTHER_LIST_FILE)

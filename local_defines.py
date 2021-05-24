@@ -9,6 +9,8 @@ CAT_LIST_FILE = "C:\\wamp64\\www\\wordpress\\wp-content\\themes\\Divi-child\\pet
 
 OTHER_LIST_FILE = "C:\\wamp64\\www\\wordpress\\wp-content\\themes\\Divi-child\\pet_data\\listings\\other_list.php"
 
+NEW_DIGS_LIST_FILE = "C:\\wamp64\\www\\wordpress\\wp-content\\themes\\Divi-child\\pet_data\\listings\\new_digs_list.php"
+
 PLACEHOLDER_IMAGE = "\\wordpress\\wp-content\\themes\\Divi-child\\images\\dpa-placeholder.png"
 
 LIST_THEME_PATH = "../../wordpress/wp-content/themes/Divi-child/"
