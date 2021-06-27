@@ -1,5 +1,6 @@
 # ShelterLuv sync to local Dallas Pets Alive filesystem script
 # Developed for Dallas Pets Alive by Katie Patterson www.kirska.com
+from typing_extensions import final
 import requests
 import collections
 import json
@@ -11,11 +12,12 @@ from local_defines import (
     OTHER_LIST_FILE,
     DOG_LIST_FILE,
     CAT_LIST_FILE,
-    NEW_DIGS_LIST_FILE,
+    HOMEPAGE_LIST_FILE,
 )
 from common_functions import (
     parse_animal_profile,
-    generate_pet_list
+    generate_homepage_pet_list,
+    generate_pet_list,
 )
 import os
 import codecs
@@ -88,6 +90,9 @@ def shelterluv_sync():
     for animal in ordered_names:
         ordered_animals[animal] = animals_dict[animal]
 
+    # get the homepage featured pets
+    get_homepage_pets(animals_dict)
+
     # parse the profiles
     parse_profiles(ordered_animals)
 
@@ -126,23 +131,40 @@ def parse_lists(pets):
     dog_list = collections.OrderedDict()
     cat_list = collections.OrderedDict()
     other_list = collections.OrderedDict()
-    new_digs_list = collections.OrderedDict()
 
     # divide up the pets
     for pet in pets:
-        if pets[pet]["Status"] == "New Digs Rehoming":
-            new_digs_list[pet] = pets[pet]
-        elif pets[pet]["Type"] == "Dog":
+        if pets[pet]["Type"] == "Dog":
             dog_list[pet] = pets[pet]
         elif pets[pet]["Type"] == "Cat":
             cat_list[pet] = pets[pet]
         else:
             other_list[pet] = pets[pet]
 
-    generate_pet_list(new_digs_list, NEW_DIGS_LIST_FILE)
     generate_pet_list(dog_list, DOG_LIST_FILE)
     generate_pet_list(cat_list, CAT_LIST_FILE)
     generate_pet_list(other_list, OTHER_LIST_FILE)
+
+
+def get_homepage_pets(pets):
+    # get a list of the 6 ID's that are longest stays
+    longest_stays = {}
+
+    for pet in pets:
+        if len(longest_stays) < 6:
+            longest_stays[pet] = pets[pet]["LastIntakeUnixTime"]
+            continue
+        max_pet = max(longest_stays, key=lambda key: longest_stays[key])
+        max_pet_time = longest_stays[max_pet]
+        if pets[pet]["LastIntakeUnixTime"] < max_pet_time:
+            del longest_stays[max_pet]
+            longest_stays[pet] = pets[pet]["LastIntakeUnixTime"]
+
+    final_longest_stay_list = {}
+    for pet in longest_stays:
+        final_longest_stay_list[pet] = pets[pet]
+
+    generate_homepage_pet_list(final_longest_stay_list, HOMEPAGE_LIST_FILE)
 
 
 shelterluv_sync()

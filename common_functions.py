@@ -155,6 +155,65 @@ def generate_pet_list(pets, filename):
         file.write(indent(doc.getvalue()))
 
 
+def generate_homepage_pet_list(pets, filename):
+    doc, tag, text = Doc().tagtext()
+
+    if len(pets) == 0:
+        with open(filename, 'w+') as file:
+            file.write(indent(doc.getvalue()))
+        return
+
+    doc.asis(
+        "<script src=\"" +
+        LIST_THEME_PATH +
+        "lazy/jquery.min.js\"></script>"
+    )
+    doc.asis(
+        "<script type=\"text/javascript\" src=\"" +
+        LIST_THEME_PATH +
+        "lazy/jquery.lazy.min.js\"></script>"
+    )
+
+    with tag("div", klass="pet-list pet-list-homepage"):
+        for pet in pets:
+
+            pet_name = pets[pet]['Name']
+            pet_id = pets[pet]['ID']
+            pet_photo = pets[pet]['CoverPhoto']
+
+            with tag("div", klass="pet-list-pet",):
+                pet_link = PET_LINK_RELATIVE_PATH + "pet/" + pet_id
+                with tag("a", href=pet_link):
+                    with tag("div", klass="pet-list-image"):
+                        pet_photo_link = pet_photo
+                        if "default_" in pet_photo:
+                            pet_photo_link = PLACEHOLDER_IMAGE
+                        doc.stag(
+                            "img",
+                            ("data-src", pet_photo_link),
+                            src=PLACEHOLDER_IMAGE,
+                            alt="Photo",
+                            klass="lazy",
+                        )
+                    with tag("div", klass="pet-list-name"):
+                        text(pet_name)
+
+    doc.asis(
+        "<script>" +
+        "    $(function() {" +
+        "        $('.lazy').lazy();" +
+        "    });" +
+        "</script>"
+    )
+    doc.asis(
+        "<script src=\"//cdnjs.cloudflare.com/ajax/libs/babel-polyfill" +
+        "/6.26.0/polyfill.min.js\"></script>"
+    )
+
+    with open(filename, 'w+') as file:
+        file.write(indent(doc.getvalue()))
+
+
 def parse_animal_profile(animal):
     doc, tag, text, line = Doc().ttl()
 
