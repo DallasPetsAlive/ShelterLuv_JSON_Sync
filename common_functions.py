@@ -187,7 +187,7 @@ def generate_homepage_pet_list(pets, filename):
             pet_id = pets[pet]['ID']
             pet_photo = pets[pet]['CoverPhoto']
 
-            with tag("div", klass="pet-list-pet"):
+            with tag("div", klass="pet-list-pet pet-list-pet-homepage"):
                 pet_link = PET_LINK_RELATIVE_PATH + "pet/" + pet_id
                 with tag("a", href=pet_link):
                     with tag("div", klass="pet-list-image"):
