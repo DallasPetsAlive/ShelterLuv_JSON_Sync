@@ -1,6 +1,5 @@
 # ShelterLuv sync to local Dallas Pets Alive filesystem script
 # Developed for Dallas Pets Alive by Katie Patterson www.kirska.com
-from typing_extensions import final
 import requests
 import collections
 import json
