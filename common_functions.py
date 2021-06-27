@@ -175,13 +175,19 @@ def generate_homepage_pet_list(pets, filename):
     )
 
     with tag("div", klass="pet-list pet-list-homepage"):
+        pet_count = 0
         for pet in pets:
+            pet_count += 1
+            if pet_count == 4:
+                doc.asis(
+                    "<div class=\"flex-break\"></div>"
+                )
 
             pet_name = pets[pet]['Name']
             pet_id = pets[pet]['ID']
             pet_photo = pets[pet]['CoverPhoto']
 
-            with tag("div", klass="pet-list-pet",):
+            with tag("div", klass="pet-list-pet"):
                 pet_link = PET_LINK_RELATIVE_PATH + "pet/" + pet_id
                 with tag("a", href=pet_link):
                     with tag("div", klass="pet-list-image"):
