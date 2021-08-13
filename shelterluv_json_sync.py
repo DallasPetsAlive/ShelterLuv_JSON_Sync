@@ -3,6 +3,7 @@
 import requests
 import collections
 import json
+import logging
 import operator
 from local_defines import (
     API_KEY,
@@ -12,14 +13,26 @@ from local_defines import (
     DOG_LIST_FILE,
     CAT_LIST_FILE,
     HOMEPAGE_LIST_FILE,
+    NEW_DIGS_DOG_LIST_FILE,
+    NEW_DIGS_CAT_LIST_FILE,
+    NEW_DIGS_PROFILES_DIRECTORY,
+    NEW_DIGS_ANIMALS_FILE,
+    AIRTABLE_API_KEY,
+    AIRTABLE_BASE,
+    PETS_FILE_KEY,
 )
 from common_functions import (
     parse_animal_profile,
+    parse_new_digs_animal_profile,
     generate_homepage_pet_list,
     generate_pet_list,
+    generate_new_digs_pet_list,
 )
 import os
 import codecs
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 
 # First fetch the entire list of animals
@@ -166,4 +179,69 @@ def get_homepage_pets(pets):
     generate_homepage_pet_list(final_longest_stay_list, HOMEPAGE_LIST_FILE)
 
 
+def new_digs_sync():
+    # get new digs pets from airtable
+    url = "https://api.airtable.com/v0/" + AIRTABLE_BASE + "/Pets"
+    headers = {"Authorization": "Bearer " + AIRTABLE_API_KEY}
+
+    response = requests.get(url, headers=headers)
+    if(response.status_code != requests.codes.ok):
+        logger.error("Airtable response: ")
+        logger.error(response)
+        logger.error("URL: " + url)
+        logger.error("Headers: " + str(headers))
+        return
+
+    airtable_response = response.json()
+
+    pets = airtable_response["records"]
+
+    # write animals out to file for searching later
+    with open(NEW_DIGS_ANIMALS_FILE, 'w+') as animals_file_obj:
+        animals_file_obj.write(json.dumps(airtable_response))
+
+    parse_new_digs_profiles(pets)
+
+
+def parse_new_digs_profiles(pets):
+    dog_list = []
+    cat_list = []
+    output_file_list = []
+    # get current list of animal pages
+    profiles_current = os.listdir(NEW_DIGS_PROFILES_DIRECTORY)
+
+    for pet in pets:
+        fields = pet["fields"]
+
+        status = fields.get("Status")
+        if status != "Published - Available for Adoption":
+            continue
+
+        id = fields.get("Pet ID - do not edit")
+
+        species = fields.get("Pet Species", None)
+        if species == "Dog":
+            dog_list.append(pet)
+        elif species == "Cat":
+            cat_list.append(pet)
+
+        filename = str(id) + ".php"
+        output_file_list.append(filename)
+
+        with codecs.open(NEW_DIGS_PROFILES_DIRECTORY + filename, 'w+') as pet_file:
+            output = parse_new_digs_animal_profile(pet)
+            pet_file.write(output)
+
+    # delete stagnant pages
+    for profile in profiles_current:
+        if profile not in output_file_list:
+            print("deleting " + NEW_DIGS_PROFILES_DIRECTORY + profile)
+            if os.path.isfile(NEW_DIGS_PROFILES_DIRECTORY + profile):
+                os.remove(NEW_DIGS_PROFILES_DIRECTORY + profile)
+
+    generate_new_digs_pet_list(dog_list, NEW_DIGS_DOG_LIST_FILE)
+    generate_new_digs_pet_list(cat_list, NEW_DIGS_CAT_LIST_FILE)
+
+
 shelterluv_sync()
+new_digs_sync()
