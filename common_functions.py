@@ -410,7 +410,7 @@ def generate_new_digs_pet_list(pets, filename):
                 ("data-jplist-item"),
                 klass="pet-list-pet",
             ):
-                pet_link = PET_LINK_RELATIVE_PATH + "pet/" + pet_id
+                pet_link = PET_LINK_RELATIVE_PATH + "new_digs_pet/" + pet_id
                 with tag("a", href=pet_link):
                     with tag("div", klass="pet-list-image"):
                         pet_photo_link = pet_photo
