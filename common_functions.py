@@ -7,6 +7,8 @@ from local_defines import (
 from species_functions import profile_other_data
 from new_digs_species_functions import new_digs_profile_other_data
 
+NEW_DIGS_ADOPTION_APP_LINK = "https://airtable.com/shrJ4gbiSeSsgJyd8?prefill_Applied%20For="
+
 
 # This function accepts the list of pets and
 # generates the formatted list for browser output
@@ -451,7 +453,7 @@ def generate_new_digs_pet_list(pets, filename):
 def parse_new_digs_animal_profile(pet):
     pet_fields = pet["fields"]
     name = pet_fields.get("Pet Name")
-    pet_id = str(pet_fields.get("Pet ID - do not edit"))
+    record_id = pet["id"]
     doc, tag, text, line = Doc().ttl()
 
     with tag("div", klass="pet-profile"):
@@ -490,13 +492,10 @@ def parse_new_digs_animal_profile(pet):
                 new_digs_profile_other_data(pet, doc, text, line)
 
             adopt_link = (
-                "https://www.shelterluv.com/matchme/adopt/DPA-A-" +
-                pet_id
+                NEW_DIGS_ADOPTION_APP_LINK +
+                record_id
             )
-            if pet_fields.get("Pet Species") == "Dog":
-                adopt_link = adopt_link + "?species=Dog"
-            elif pet_fields.get("Pet Species") == "Cat":
-                adopt_link = adopt_link + "?species=Cat"
+
             with tag(
                 "a",
                 href=adopt_link,
