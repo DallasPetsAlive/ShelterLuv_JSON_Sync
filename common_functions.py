@@ -491,9 +491,16 @@ def parse_new_digs_animal_profile(pet):
             with tag("div", klass="pet-profile-other-data"):
                 new_digs_profile_other_data(pet, doc, text, line)
 
+            interested_in = "Dogs"
+            species = pet_fields.get("Pet Species")
+            if species == "Cat":
+                interested_in = "Cats"
+
             adopt_link = (
                 NEW_DIGS_ADOPTION_APP_LINK +
-                record_id
+                record_id +
+                "&prefill_I%27m+interested+in+adopting+this+type+of+pet:=" +
+                interested_in
             )
 
             with tag(
