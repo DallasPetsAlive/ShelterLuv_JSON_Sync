@@ -335,7 +335,7 @@ def generate_new_digs_pet_list(pets, filename):
             with tag(
                 "div",
                 ("data-jplist-control", "dropdown-sort"),
-                ("data-group", "group1"),
+                ("data-group", "newdigsgroup"),
                 ("data-name", "sorttitle"),
                 klass="jplist-dd",
             ):
@@ -392,7 +392,7 @@ def generate_new_digs_pet_list(pets, filename):
                     ):
                         text(" Newest Arrivals First ")
 
-    with tag("div", ("data-jplist-group", "group1"), klass="pet-list"):
+    with tag("div", ("data-jplist-group", "newdigsgroup"), klass="pet-list"):
         pet_count = 0
         for pet in pets:
             pet_count += 1
