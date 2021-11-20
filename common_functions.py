@@ -400,10 +400,7 @@ def generate_new_digs_pet_list(pets, filename):
 
             pet_name = pet_fields.get("Pet Name")
             pet_id = str(pet_fields.get("Pet ID - do not edit"))
-            pet_photo = None
-            pet_photos = pet_fields.get("Pictures")
-            if pet_photos:
-                pet_photo = pet_photos[0]["url"]
+            pet_photo = pet_fields.get("ThumbnailURL")
 
             with tag(
                 "div",
