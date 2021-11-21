@@ -1,5 +1,6 @@
 # Common/other animal functions for ShelterLuv sync
 # Developed for Dallas Pets Alive by Katie Patterson www.kirska.com
+from datetime import datetime
 from yattag import Doc, indent
 from local_defines import (
     PLACEHOLDER_IMAGE, LIST_THEME_PATH, PET_LINK_RELATIVE_PATH
@@ -150,8 +151,7 @@ def generate_pet_list(pets, filename):
     doc.asis(
         "<script src=\"" +
         LIST_THEME_PATH +
-        "jplist/jplist.min.js\"></script>" +
-        "<script>jplist.init();</script>"
+        "jplist/jplist.min.js\"></script>"
     )
 
     with open(filename, 'w+') as file:
@@ -423,7 +423,11 @@ def generate_new_digs_pet_list(pets, filename):
                     with tag("div", klass="pet-list-name"):
                         text(pet_name)
                     with tag("div", klass="pet-list-intake-date hidden"):
-                        text(pet_fields.get("Made Available for Adoption Date"))
+                        date = pet_fields.get("Made Available for Adoption Date")
+                        if date:
+                            date = datetime.strptime(date, "%Y-%m-%d")
+                            epoch_time = (date - datetime(1970, 1, 1)).total_seconds()
+                            text(epoch_time)
 
     doc.asis(
         "<script>" +
@@ -439,8 +443,7 @@ def generate_new_digs_pet_list(pets, filename):
     doc.asis(
         "<script src=\"" +
         LIST_THEME_PATH +
-        "jplist/jplist.min.js\"></script>" +
-        "<script>jplist.init();</script>"
+        "jplist/jplist.min.js\"></script>"
     )
 
     with open(filename, 'w+') as file:
