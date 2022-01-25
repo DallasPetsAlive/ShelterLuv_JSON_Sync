@@ -306,9 +306,8 @@ def generate_new_digs_pet_list(pets, filename):
     if len(pets) == 0:
         with tag("div", klass="empty-pet-list"):
             text(
-                "We currently have no pets of this type!" +
-                " Please check out our other adoptable pets," +
-                " or consider fostering."
+                "We currently have no pets of this type" +
+                " in the New Digs program."
             )
         with open(filename, 'w+') as file:
             file.write(indent(doc.getvalue()))
