@@ -230,6 +230,7 @@ def parse_new_digs_profiles(pets):
 
         with codecs.open(NEW_DIGS_PROFILES_DIRECTORY + filename, 'w+') as pet_file:
             output = parse_new_digs_animal_profile(pet)
+            output = output.replace('\u2028', '')
             pet_file.write(output)
 
     # delete stagnant pages

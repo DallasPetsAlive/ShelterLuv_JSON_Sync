@@ -284,18 +284,12 @@ def parse_animal_profile(animal):
                 with tag("p"):
                     doc.asis(animal["Description"].replace("\n\n", "</p><p>"))
 
-            with tag(
-                "div",
-                klass=(
-                    "et_pb_promo et_pb_bg_layout_dark" +
-                    "et_pb_text_align_center pet-profile-adopt-bottom"
-                ),
-                style="background-color: #006cb7;"
-            ):
-                with tag("div", klass="et_pb_promo_description"):
-                    line("h2", "Apply to Adopt " + animal["Name"] + " Today")
-                with tag("a", klass="et_pb_promo_button", href=adopt_link):
-                    text("Go To Adoption Application")
+            with tag("div", klass=("pet-profile-adopt-bottom")):
+                with tag("div", klass="pet-profile-adopt-bottom-text"):
+                    text("Apply to Adopt " + animal["Name"] + " Today")
+                with tag("div", klass="pet-profile-adopt-bottom-button-wrapper"):
+                    with tag("a", klass="pet-profile-adopt-bottom-button", href=adopt_link):
+                        text("Go To Adoption Application")
 
     return indent(doc.getvalue())
 
@@ -527,17 +521,11 @@ def parse_new_digs_animal_profile(pet):
                 with tag("p"):
                     doc.asis(description.replace("\n\n", "</p><p>"))
 
-            with tag(
-                "div",
-                klass=(
-                    "et_pb_promo et_pb_bg_layout_dark" +
-                    "et_pb_text_align_center pet-profile-adopt-bottom"
-                ),
-                style="background-color: #006cb7;"
-            ):
-                with tag("div", klass="et_pb_promo_description"):
-                    line("h2", "Apply to Adopt " + name + " Today")
-                with tag("a", klass="et_pb_promo_button", href=adopt_link):
-                    text("Go To Adoption Application")
+            with tag("div", klass=("pet-profile-adopt-bottom")):
+                with tag("div", klass="pet-profile-adopt-bottom-text"):
+                    text("Apply to Adopt " + name + " Today")
+                with tag("div", klass="pet-profile-adopt-bottom-button-wrapper"):
+                    with tag("a", klass="pet-profile-adopt-bottom-button", href=adopt_link):
+                        text("Go To Adoption Application")
 
     return indent(doc.getvalue())
