@@ -216,7 +216,7 @@ def new_digs_sync():
     with open(NEW_DIGS_ANIMALS_FILE, 'w+') as animals_file_obj:
         animals_file_obj.write(json.dumps(airtable_response))
 
-    parse_new_digs_profiles(pets)
+    parse_new_digs_profiles(pets_list)
 
 
 def parse_new_digs_profiles(pets):
