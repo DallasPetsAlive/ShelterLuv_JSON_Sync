@@ -184,17 +184,33 @@ def new_digs_sync():
     url = "https://api.airtable.com/v0/" + AIRTABLE_BASE + "/Pets"
     headers = {"Authorization": "Bearer " + AIRTABLE_API_KEY}
 
-    response = requests.get(url, headers=headers)
-    if(response.status_code != requests.codes.ok):
-        logger.error("Airtable response: ")
-        logger.error(response)
-        logger.error("URL: " + url)
-        logger.error("Headers: " + str(headers))
-        return
+    offset = None
+    quit = False
+    pets_list = []
 
-    airtable_response = response.json()
+    while not quit:
+        params = {}
+        if offset:
+            params = {
+                "offset": offset
+            }
 
-    pets = airtable_response["records"]
+        response = requests.get(url, headers=headers, params=params)
+        if(response.status_code != requests.codes.ok):
+            logger.error("Airtable response: ")
+            logger.error(response)
+            logger.error("URL: " + url)
+            logger.error("Headers: " + str(headers))
+            return
+
+        airtable_response = response.json()
+
+        if not airtable_response.get("offset"):
+            quit = True
+        else:
+            offset = airtable_response["offset"]
+
+        pets_list += airtable_response["records"]
 
     # write animals out to file for searching later
     with open(NEW_DIGS_ANIMALS_FILE, 'w+') as animals_file_obj:
