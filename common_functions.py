@@ -472,7 +472,12 @@ def parse_new_digs_animal_profile(pet):
                 pet_photos = pet_fields.get("Pictures")
                 if len(pet_photos) > 0:
                     for photo in pet_photos:
-                        doc.stag("img", src=photo["url"])
+                        url = (
+                            "https://dpa-media.s3.us-east-2.amazonaws.com/new-digs-photos/"
+                            + record_id + "/"
+                            + photo.get("filename")
+                        )
+                        doc.stag("img", src=url)
                 else:
                     doc.stag("img", src=PLACEHOLDER_IMAGE)
 
